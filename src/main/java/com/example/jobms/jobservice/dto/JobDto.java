@@ -20,3 +20,5 @@ public class JobDto {
     private Company company;
     private List<Review> reviews;
 }
+
+//test

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.example.jobms.jobservice.client.CompanyClient;
 import com.example.jobms.jobservice.client.ReviewClient;
@@ -17,6 +16,8 @@ import com.example.jobms.jobservice.model.external.Company;
 import com.example.jobms.jobservice.model.external.Review;
 import com.example.jobms.jobservice.repository.JobRepository;
 import com.example.jobms.jobservice.service.JobService;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Service
 public class JobServiceImpl implements JobService {
@@ -34,6 +35,7 @@ public class JobServiceImpl implements JobService {
    private ReviewClient reviewClient;
 
    @Override
+   @CircuitBreaker(name = "companyBreaker")
    public List<JobDto> findAll() {
 
       List<Job> jobs = jobRepository.findAll();
